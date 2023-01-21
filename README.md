@@ -6,4 +6,4 @@ Features:
 - Maintains Health (Until food or water runs out).
 
 ![Beta XML](images/Beta.png)
-*Some steps not implemented (Check issues)
+*Some steps are not implemented (Check issues)*
