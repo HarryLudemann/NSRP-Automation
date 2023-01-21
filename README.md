@@ -1,7 +1,7 @@
 # NSRP Auto Meth
 Automate the production of meth in GTA NSRP.
 
-Features:
+### Features:
 - Completely Automates Production (Until supplies run out)
 - Maintains Health (Until food or water runs out).
 
