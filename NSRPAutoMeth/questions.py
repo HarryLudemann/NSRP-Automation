@@ -1,5 +1,5 @@
-PATH_TO_TESSERACT = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-
+# key is a sentence or word that is within the question, 
+# value is a word or sentence within the answer
 QUESTION_ANSWERS = {
     "The filter is clogged": "Replace the filter",
     "sprinkles": "Add them now",
@@ -13,3 +13,4 @@ QUESTION_ANSWERS = {
     "turning into crystal": "Raise the temp",
     "glass pieces": "NO",
 }
+

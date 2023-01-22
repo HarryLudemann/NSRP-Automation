@@ -5,5 +5,5 @@ Automate the production of meth in GTA NSRP.
 - Completely Automates Production (Until supplies run out)
 - Maintains Health (Until food or water runs out).
 
-![Beta XML](images/Beta.png)
+![Beta XML](images/XMLDiagram.png)    
 *Some steps are not implemented (Check issues)*

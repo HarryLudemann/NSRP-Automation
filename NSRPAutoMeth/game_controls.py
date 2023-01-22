@@ -1,22 +1,35 @@
-from pyautogui import press
-from time import sleep
+import pydirectinput
+import time
+from configparser import ConfigParser
+
+_parser = ConfigParser()
+_parser.read('settings.ini')
+cook_key = _parser.get('Basic', 'cook_key')
+enter_exit_key = _parser.get('Basic', 'enter_exit_key')
+lock_unlock_key = _parser.get('Basic', 'lock_unlock_door')
+
+def _pressKey(key: str):
+    """ Presses key. """
+    pydirectinput.keyDown(key)
+    time.sleep(0.5)
+    pydirectinput.keyUp(key)
 
 def startCook():
     """ Starts cooking process. """
-    print("Starting cooking process...")
-    press('g')
+    _pressKey(cook_key)
+    _pressKey(cook_key)
 
 def enterExitVehicle():
     """ Enters or exits vehicle. """
-    press('f')
+    _pressKey(enter_exit_key)
 
 def lockUnlockVehicle():
     """ Locks or unlocks vehicle. """
-    press('pagedown')
+    _pressKey(lock_unlock_key)
 
 def moveBackToFront():
     """ Moves back to front of vehicle. """
-    press('f')
-    sleep(1)
-    press('f')
-    sleep(1)
+    enterExitVehicle()
+    time.sleep(1)
+    enterExitVehicle()
+    time.sleep(1)

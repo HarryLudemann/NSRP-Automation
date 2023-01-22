@@ -1,12 +1,14 @@
 from PIL import ImageGrab
 from pytesseract.pytesseract import image_to_string
-from pyautogui import press 
-from NSRPAutoMeth.constants import QUESTION_ANSWERS
+from pydirectinput import press 
+from NSRPAutoMeth.questions import QUESTION_ANSWERS
 from NSRPAutoMeth.game_controls import startCook, moveBackToFront
+import logging
+
 
 class GameInformation:
-    consecutiveFailedTicks = 0
-    cooking = False
+    _consecutiveFailedTicks = 0
+    _cooking = False
     def _getText(self) -> str:
         """ Takes screenshot of screen and returns text detected."""
         # img = Image.open("images/Question.png")
@@ -38,6 +40,10 @@ class GameInformation:
 
     def _answerQuestion(self, question: str, imageText: str) -> None:
         """ Answers question. """
+        # check question is in the dict
+        if question not in QUESTION_ANSWERS:
+            logging.info(f"Question: {question} not in dict.")
+            return
         answer = QUESTION_ANSWERS[question]
         if answer in imageText:
             # get the number at the start of the line of where answer is
@@ -45,25 +51,30 @@ class GameInformation:
             # get just the third character before the answer
             number = imageText[answerIndex - 3]
             press(number)
+            press(number)
+            press(number)
+            logging.info(f'Answered Question: "{question}"')
 
     def tick(self) -> None:
         """ Runs every tick. """
         if not self.cooking:
             startCook()
+            logging.info("Started cook")
             self.cooking = True
             return
         imageText = self._getText()
         # check if image contains question or production percent
         flag = False
-        if "Meth production:" in imageText: # if production percent is showing
-            productionPercent = self._getProductionPercent(imageText)
-            print(f"Production: {productionPercent}%")
-            flag = True
         if "?" in imageText: # if question 2
             question = self._getQuestion(imageText)
             self._answerQuestion(question, imageText)
-            print(f'Answered Question: "{question}"')
             flag = True
+        elif "Meth production:" in imageText: # if production percent is showing
+            productionPercent = self._getProductionPercent(imageText)
+            logging.info(f"Production: {productionPercent}%")
+            flag = True
+        else:
+            logging.info("No question or production percent detected.")
         # count tick and/or failed tick
         if flag:
             self.consecutiveFailedTicks = 0
@@ -71,6 +82,8 @@ class GameInformation:
             self.consecutiveFailedTicks += 1
         # if over five failed ticks then restart
         if self.consecutiveFailedTicks > 5:
+            logging.info("Cooking Completed or Failed.")
+            logging.info("Restarting cooking process...")
             self.cooking = False
             self.consecutiveFailedTicks = 0
             moveBackToFront()
