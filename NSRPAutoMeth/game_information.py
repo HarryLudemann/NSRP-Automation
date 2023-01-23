@@ -13,7 +13,8 @@ class GameInformation:
         """ Takes screenshot of screen and returns text detected."""
         # img = Image.open("images/Question.png")
         # img = Image.open("images/ProductionPercent.png")
-        img = ImageGrab.grab()
+        # take screnshot of left side of screen
+        img = ImageGrab.grab(bbox=(0, 0, 500, 500))
         text = image_to_string(img)
         # if a line contains certain symbols the then remove
         newLines = []
@@ -57,10 +58,10 @@ class GameInformation:
 
     def tick(self) -> None:
         """ Runs every tick. """
-        if not self.cooking:
+        if not self._cooking:
             startCook()
             logging.info("Started cook")
-            self.cooking = True
+            self._cooking = True
             return
         imageText = self._getText()
         # check if image contains question or production percent
@@ -77,13 +78,13 @@ class GameInformation:
             logging.info("No question or production percent detected.")
         # count tick and/or failed tick
         if flag:
-            self.consecutiveFailedTicks = 0
+            self._consecutiveFailedTicks = 0
         else:
-            self.consecutiveFailedTicks += 1
+            self._consecutiveFailedTicks += 1
         # if over five failed ticks then restart
-        if self.consecutiveFailedTicks > 5:
+        if self._consecutiveFailedTicks > 5:
             logging.info("Cooking Completed or Failed.")
             logging.info("Restarting cooking process...")
-            self.cooking = False
-            self.consecutiveFailedTicks = 0
+            self._cooking = False
+            self._consecutiveFailedTicks = 0
             moveBackToFront()

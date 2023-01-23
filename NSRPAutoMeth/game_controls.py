@@ -4,9 +4,9 @@ from configparser import ConfigParser
 
 _parser = ConfigParser()
 _parser.read('settings.ini')
-cook_key = _parser.get('Basic', 'cook_key')
-enter_exit_key = _parser.get('Basic', 'enter_exit_key')
-lock_unlock_key = _parser.get('Basic', 'lock_unlock_door')
+cook_key = _parser.get('Keys', 'cook')
+enter_exit_key = _parser.get('Keys', 'enter_exit')
+lock_unlock_key = _parser.get('Keys', 'lock_unlock_door')
 
 def _pressKey(key: str):
     """ Presses key. """

@@ -1,12 +1,20 @@
-2023-01-22 21:56:20,422:INFO:Starting in: 10
-2023-01-22 21:56:21,438:INFO:Starting in: 9
-2023-01-22 21:56:22,453:INFO:Starting in: 8
-2023-01-22 21:56:23,465:INFO:Starting in: 7
-2023-01-22 21:56:24,473:INFO:Starting in: 6
-2023-01-22 21:56:25,481:INFO:Starting in: 5
-2023-01-22 21:56:26,496:INFO:Starting in: 4
-2023-01-22 21:56:27,509:INFO:Starting in: 3
-2023-01-22 21:56:28,520:INFO:Starting in: 2
-2023-01-22 21:56:29,532:INFO:Starting in: 1
-2023-01-22 21:56:32,006:INFO:Started cook
-2023-01-22 21:56:44,716:INFO:No question or production percent detected.
+2023-01-23 18:57:19,808:INFO:Starting in: 10
+2023-01-23 18:57:20,808:INFO:Starting in: 9
+2023-01-23 18:57:21,809:INFO:Starting in: 8
+2023-01-23 18:57:22,809:INFO:Starting in: 7
+2023-01-23 18:57:23,810:INFO:Starting in: 6
+2023-01-23 18:57:24,811:INFO:Starting in: 5
+2023-01-23 18:57:25,811:INFO:Starting in: 4
+2023-01-23 18:57:26,812:INFO:Starting in: 3
+2023-01-23 18:57:27,812:INFO:Starting in: 2
+2023-01-23 18:57:28,813:INFO:Starting in: 1
+2023-01-23 18:57:31,216:INFO:Started cook
+2023-01-23 18:57:33,592:INFO:No question or production percent detected.
+2023-01-23 18:57:35,952:INFO:No question or production percent detected.
+2023-01-23 18:57:38,323:INFO:No question or production percent detected.
+2023-01-23 18:57:40,676:INFO:No question or production percent detected.
+2023-01-23 18:57:43,035:INFO:No question or production percent detected.
+2023-01-23 18:57:45,406:INFO:No question or production percent detected.
+2023-01-23 18:57:45,406:INFO:Cooking Completed or Failed.
+2023-01-23 18:57:45,406:INFO:Restarting cooking process...
+2023-01-23 18:57:52,214:INFO:Started cook
