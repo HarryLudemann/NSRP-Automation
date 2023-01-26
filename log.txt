@@ -1,64 +1,40 @@
-2023-01-26 21:50:39,040:INFO:Starting in: 10
-2023-01-26 21:50:40,049:INFO:Starting in: 9
-2023-01-26 21:50:41,052:INFO:Starting in: 8
-2023-01-26 21:50:42,065:INFO:Starting in: 7
-2023-01-26 21:50:43,080:INFO:Starting in: 6
-2023-01-26 21:50:44,095:INFO:Starting in: 5
-2023-01-26 21:50:45,105:INFO:Starting in: 4
-2023-01-26 21:50:46,113:INFO:Starting in: 3
-2023-01-26 21:50:47,126:INFO:Starting in: 2
-2023-01-26 21:50:48,135:INFO:Starting in: 1
-2023-01-26 21:50:50,601:INFO:Started cook
-2023-01-26 21:50:56,137:INFO:Production: ” in imageText: # if production percent is showing
-productionPercent = self._getProductionPercent (imageText)
-‘logging.info(#"Production: {productionPercent}")
-flag = True
-else:
-‘Logging.warning('Failed text detect
-‘ogging.warning("No question or pra
-# count tick and/or failed tick
-if flag: Ac
-self._consecutiveFailedTicks = 0 7
->python main. py
-_Gariabie) conscetvetesiss) Starting in:
-_"consecutiveFailedTicks > Starting in
-‘Togging. info("Cooking Completed or) Starting in:
-logging. info("Restarting cooking o° Starting ‘in
-10
-9
-8
-self._cooking = False - Zz
-Starting in: 6
-5
-4
-3
-2
-1
-self. _consecutiverailedTicks = 0 ing 7
-Starting in
-moveBackToFront() i
-Starting in:
-Starting in
-Starting in:
-Starting in
-Started cook
-BSSSRSGRARRSRASZRAIRARURAS
-Ln30,Col1 Spaces:4 UTES CRLF (2 Python
-CAWindows\system3z_X
-23407 6t-bit
-@colve ATSpet
-B Orrerier
-RO%
-2023-01-26 21:51:00,560:INFO:Production: " in imageText: # if production percent is showing
-RO%
-2023-01-26 21:51:05,472:INFO:Production: ” in imageText: # if production percent is showing
-productionPercent = self._getProductionPercent (imageText)
-logging. info(f"Production: {productionPercent}%
-2023-01-26 21:51:09,140:INFO:Production: 51%
-2023-01-26 21:51:12,784:INFO:Production: 53%
-2023-01-26 21:51:16,426:INFO:Production: 51%
-2023-01-26 21:51:20,077:INFO:Production: 51%
-2023-01-26 21:51:23,730:INFO:Production: 51%
-2023-01-26 21:51:27,376:INFO:Production: 51%
-2023-01-26 21:51:31,039:INFO:Production: 5%
-2023-01-26 21:51:34,671:INFO:Production: 51%
+2023-01-27 12:53:20,381:DEBUG:Setup complete
+2023-01-27 12:53:20,381:INFO:Starting in: 5
+2023-01-27 12:53:21,393:INFO:Starting in: 4
+2023-01-27 12:53:22,400:INFO:Starting in: 3
+2023-01-27 12:53:23,416:INFO:Starting in: 2
+2023-01-27 12:53:24,429:INFO:Starting in: 1
+2023-01-27 12:53:26,890:INFO:Started cook
+2023-01-27 12:53:29,644:DEBUG:Text: 
+2023-01-27 12:53:29,644:WARNING:No question or production percent detected
+2023-01-27 12:53:29,644:DEBUG:Detected Text: 
+
+2023-01-27 12:53:32,355:DEBUG:Text: 
+2023-01-27 12:53:32,355:WARNING:No question or production percent detected
+2023-01-27 12:53:32,356:DEBUG:Detected Text: 
+
+2023-01-27 12:53:35,088:DEBUG:Text: 
+2023-01-27 12:53:35,089:WARNING:No question or production percent detected
+2023-01-27 12:53:35,089:DEBUG:Detected Text: 
+
+2023-01-27 12:53:37,827:DEBUG:Text: 
+2023-01-27 12:53:37,827:WARNING:No question or production percent detected
+2023-01-27 12:53:37,827:DEBUG:Detected Text: 
+
+2023-01-27 12:53:40,582:DEBUG:Text: The filters clogged, what do you
+do?
+1. Clean it using compressed air
+2. Replace the filter
+3. Clean it using a tooth brush
+2023-01-27 12:53:40,918:INFO:Answered Question: "The filters clogged"
+2023-01-27 12:53:43,685:DEBUG:Text: The filters clogged, what do you
+do?
+1. Clean it using compressed air
+2. Replace the filter
+3. Clean it using a tooth brush
+2023-01-27 12:53:44,018:INFO:Answered Question: "The filters clogged"
+2023-01-27 12:53:46,784:DEBUG:Text: The filters clogged, what do you
+do?
+1. Clean it using compressed air
+2. Replace the filter
+3. Clean it using a tooth brush

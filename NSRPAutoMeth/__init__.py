@@ -1,12 +1,10 @@
-from NSRPAutoMeth.game_information import GameInformation
-from NSRPAutoMeth.questions import QUESTION_ANSWERS
-from NSRPAutoMeth.game_controls import startCook, enterExitVehicle, lockUnlockVehicle, moveBackToFront
+from NSRPAutoMeth.main import NSRPAutoMeth
+from NSRPAutoMeth.constants import QUESTION_ANSWERS
+from NSRPAutoMeth.game_controller import GameController
+
 
 __all__ = [
-    "GameInformation", 
-    "QUESTION_ANSWERS", 
-    "startCook",
-    "enterExitVehicle",
-    "lockUnlockVehicle",
-    "moveBackToFront"
+    "NSRPAutoMeth", 
+    "GameController",
+    "QUESTION_ANSWERS"
     ]
