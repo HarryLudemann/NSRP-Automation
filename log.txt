@@ -1,23 +1,9 @@
-2023-01-27 16:57:03,197:DEBUG:Setup complete
-2023-01-27 16:57:03,197:INFO:Starting in: 5
-2023-01-27 16:57:04,205:INFO:Starting in: 4
-2023-01-27 16:57:05,215:INFO:Starting in: 3
-2023-01-27 16:57:06,230:INFO:Starting in: 2
-2023-01-27 16:57:07,237:INFO:Starting in: 1
-2023-01-27 16:57:09,711:INFO:Started cook
-2023-01-27 16:57:15,418:INFO:Answered Question: "This smoke is kind"
-2023-01-27 16:57:21,108:INFO:Answered Question: "This smoke is kind"
-2023-01-27 16:57:26,385:INFO:Answered Question: "Christmas"
-2023-01-27 16:57:31,262:INFO:Answered Question: "take a shit"
-2023-01-27 16:57:37,319:INFO:Answered Question: "This smoke is kind"
-2023-01-27 16:57:42,629:INFO:Answered Question: "The filter is clogged"
-2023-01-27 16:57:45,898:INFO:Production: 51%
-2023-01-27 16:57:48,288:WARNING:No question or production percent detected
-2023-01-27 16:57:48,288:DEBUG:Detected Text: 
-
-2023-01-27 16:57:50,757:WARNING:No question or production percent detected
-2023-01-27 16:57:50,757:DEBUG:Detected Text: 
-
-2023-01-27 16:57:55,950:INFO:Answered Question: "Christmas"
-2023-01-27 16:58:01,427:INFO:Answered Question: "This smoke is kind"
-2023-01-27 16:58:06,785:INFO:Answered Question: "Christmas"
+2023-01-27 17:40:50,233:INFO:Starting in: 5
+2023-01-27 17:40:51,238:INFO:Starting in: 4
+2023-01-27 17:40:52,244:INFO:Starting in: 3
+2023-01-27 17:40:53,259:INFO:Starting in: 2
+2023-01-27 17:40:54,262:INFO:Starting in: 1
+2023-01-27 17:40:56,729:INFO:Started cook
+2023-01-27 17:41:00,849:INFO:Production: 51%
+2023-01-27 17:41:04,751:INFO:Production: 51%
+2023-01-27 17:41:08,611:INFO:Production: 51%

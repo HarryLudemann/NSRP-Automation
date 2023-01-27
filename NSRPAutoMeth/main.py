@@ -9,9 +9,11 @@ from time import sleep, time
 import logging 
 from pyautogui import getAllTitles
 from os.path import exists
+from warnings import filterwarnings
 if __name__ != "__main__":
     from NSRPAutoMeth.constants import QUESTION_ANSWERS
     from NSRPAutoMeth.game_controller import GameController
+    
 
 
 class NSRPAutoMeth:
@@ -183,6 +185,7 @@ class NSRPAutoMeth:
             open("log.txt", "w").close() # clear log.txt
         logging.root.setLevel(
             getattr(logging, parser.get('Debug', 'log_level').split(" ")[0].upper(), None))
+        filterwarnings(action='ignore', category=DeprecationWarning, message='`np.bool8` is a deprecated alias for `np.bool_')
         logging.debug("Setup complete")
 
 
