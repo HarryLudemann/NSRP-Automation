@@ -1,40 +1,23 @@
-2023-01-27 12:53:20,381:DEBUG:Setup complete
-2023-01-27 12:53:20,381:INFO:Starting in: 5
-2023-01-27 12:53:21,393:INFO:Starting in: 4
-2023-01-27 12:53:22,400:INFO:Starting in: 3
-2023-01-27 12:53:23,416:INFO:Starting in: 2
-2023-01-27 12:53:24,429:INFO:Starting in: 1
-2023-01-27 12:53:26,890:INFO:Started cook
-2023-01-27 12:53:29,644:DEBUG:Text: 
-2023-01-27 12:53:29,644:WARNING:No question or production percent detected
-2023-01-27 12:53:29,644:DEBUG:Detected Text: 
+2023-01-27 16:57:03,197:DEBUG:Setup complete
+2023-01-27 16:57:03,197:INFO:Starting in: 5
+2023-01-27 16:57:04,205:INFO:Starting in: 4
+2023-01-27 16:57:05,215:INFO:Starting in: 3
+2023-01-27 16:57:06,230:INFO:Starting in: 2
+2023-01-27 16:57:07,237:INFO:Starting in: 1
+2023-01-27 16:57:09,711:INFO:Started cook
+2023-01-27 16:57:15,418:INFO:Answered Question: "This smoke is kind"
+2023-01-27 16:57:21,108:INFO:Answered Question: "This smoke is kind"
+2023-01-27 16:57:26,385:INFO:Answered Question: "Christmas"
+2023-01-27 16:57:31,262:INFO:Answered Question: "take a shit"
+2023-01-27 16:57:37,319:INFO:Answered Question: "This smoke is kind"
+2023-01-27 16:57:42,629:INFO:Answered Question: "The filter is clogged"
+2023-01-27 16:57:45,898:INFO:Production: 51%
+2023-01-27 16:57:48,288:WARNING:No question or production percent detected
+2023-01-27 16:57:48,288:DEBUG:Detected Text: 
 
-2023-01-27 12:53:32,355:DEBUG:Text: 
-2023-01-27 12:53:32,355:WARNING:No question or production percent detected
-2023-01-27 12:53:32,356:DEBUG:Detected Text: 
+2023-01-27 16:57:50,757:WARNING:No question or production percent detected
+2023-01-27 16:57:50,757:DEBUG:Detected Text: 
 
-2023-01-27 12:53:35,088:DEBUG:Text: 
-2023-01-27 12:53:35,089:WARNING:No question or production percent detected
-2023-01-27 12:53:35,089:DEBUG:Detected Text: 
-
-2023-01-27 12:53:37,827:DEBUG:Text: 
-2023-01-27 12:53:37,827:WARNING:No question or production percent detected
-2023-01-27 12:53:37,827:DEBUG:Detected Text: 
-
-2023-01-27 12:53:40,582:DEBUG:Text: The filters clogged, what do you
-do?
-1. Clean it using compressed air
-2. Replace the filter
-3. Clean it using a tooth brush
-2023-01-27 12:53:40,918:INFO:Answered Question: "The filters clogged"
-2023-01-27 12:53:43,685:DEBUG:Text: The filters clogged, what do you
-do?
-1. Clean it using compressed air
-2. Replace the filter
-3. Clean it using a tooth brush
-2023-01-27 12:53:44,018:INFO:Answered Question: "The filters clogged"
-2023-01-27 12:53:46,784:DEBUG:Text: The filters clogged, what do you
-do?
-1. Clean it using compressed air
-2. Replace the filter
-3. Clean it using a tooth brush
+2023-01-27 16:57:55,950:INFO:Answered Question: "Christmas"
+2023-01-27 16:58:01,427:INFO:Answered Question: "This smoke is kind"
+2023-01-27 16:58:06,785:INFO:Answered Question: "Christmas"

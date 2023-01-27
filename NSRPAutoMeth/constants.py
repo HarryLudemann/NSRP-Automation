@@ -1,10 +1,10 @@
 # key is a sentence or word that is within the question, 
 # value is a word or sentence within the answer
 QUESTION_ANSWERS = {
-    "The filters clogged": "Replace the filter",
+    "The filter is clogged": "Replace the filter",
     "sprinkles": "Add them now",
-    "rapidly approaching": "be the present",
     "This smoke is kind": "windmill",
+    "Christmas": "be a present",
     "propane": "Replace",
     "mother": "Ignore",
     "smell": "friend",

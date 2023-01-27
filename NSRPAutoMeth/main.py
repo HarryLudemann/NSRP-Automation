@@ -1,10 +1,10 @@
 from PIL import ImageGrab
-from pytesseract.pytesseract import image_to_string
+from paddleocr import PaddleOCR
+import re
 from pydirectinput import press 
 import logging
 from win32gui import FindWindow, GetWindowRect
 from configparser import ConfigParser
-from pytesseract import pytesseract
 from time import sleep, time
 import logging 
 from pyautogui import getAllTitles
@@ -51,19 +51,12 @@ class NSRPAutoMeth:
             window_rect   = GetWindowRect(window_handle)
             # screenshot left half of screen
             logging.debug("Window rect: " + str(window_rect))
-            img = ImageGrab.grab(bbox=(window_rect[0], window_rect[1], window_rect[2] / 2, window_rect[3]))
+            img = ImageGrab.grab(bbox=(window_rect[0], window_rect[1], window_rect[2] / 3, window_rect[3]))
         else: # screenshot and crop to left half
-            img = ImageGrab.grab(bbox=(0, self.resolution_y/5, self.resolution_x / 2, self.resolution_y))
+            img = ImageGrab.grab(bbox=(0, self.resolution_y/5, self.resolution_x / 3, self.resolution_y))
+        # save image
         img.save("last-screenshot.png")
-        # if a line contains certain symbols the then remove
-        newLines = []
-        for line in image_to_string(img).splitlines():
-            if any(char in line for char in ["[", "]", "|"]):
-                continue
-            if line == "":
-                continue
-            newLines.append(line)
-        return "\n".join(newLines).strip()
+        return " ".join(re.findall(r"'(.*?)'", str(self.__ocr.ocr('last-screenshot.png', cls=True))))
 
     def __getProductionPercent(self, text: str) -> str:
         """Returns production time of found in given text 
@@ -78,8 +71,10 @@ class NSRPAutoMeth:
         str
             The production percentage found within given text
         """
-        productionPercent = text.split("production:")[1].split("%")[0]
-        return productionPercent.strip()
+        productionPercent = re.search(r"\d+(?=%)", text)
+        if productionPercent is None:
+            return None
+        return productionPercent.group(0)
 
     def __getQuestion(self, text: str) -> str:
         """Finds question in given text
@@ -122,13 +117,10 @@ class NSRPAutoMeth:
     def __check_for_information(self, text) -> bool:
         """Checks for question or production percentage within left half of screen"""
         flag = False
-        if "?" in text: # question 
-            question = self.__getQuestion(text)
-            if question is None:
-                logging.warning("Question mark found, but no question")
-            else:
-                self.__answerQuestion(question, text)
-                flag = True
+        question = self.__getQuestion(text)
+        if question is not None:
+            self.__answerQuestion(question, text)
+            flag = True
         if "production:" in text: # production percent 
             productionPercent = self.__getProductionPercent(text)
             if productionPercent == None:
@@ -152,7 +144,7 @@ class NSRPAutoMeth:
             self.__consecutiveFailedTicks = 0
         else:
             logging.warning("No question or production percent detected")
-            logging.debug("Detected Text: \n" +text)
+            logging.debug("Detected Text: " + text)
             self.__consecutiveFailedTicks += 1
         # if over five failed ticks then restart
         if self.__consecutiveFailedTicks > 5:
@@ -164,6 +156,9 @@ class NSRPAutoMeth:
 
     def __setup(self):
         """ Sets up the bots logging and loads the settings config file """
+        # clear current log setup
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
         logging.basicConfig(
             filename="log.txt", 
             level=logging.NOTSET,
@@ -174,7 +169,6 @@ class NSRPAutoMeth:
             logging.error("settings.ini not found")
             exit()
         parser.read('settings.ini')
-        pytesseract.tesseract_cmd = parser.get('Setup', 'path_to_tesseract')
         self.tick_interval: int = int(parser.get('Basic', 'tick_interval'))
         self.countdown = int(parser.get('Basic', 'countdown'))
         self.window_name = parser.get('Setup', 'window_name')
@@ -196,6 +190,8 @@ class NSRPAutoMeth:
         """ 
             Starts the bot 
         """
+        print("Setting up...")
+        self.__ocr = PaddleOCR(use_angle_cls=True, lang='en', show_log=False)
         self.__setup()
         # check if game window is open
         if self.window_exist_check[0] == "t"  and self.window_name not in getAllTitles():
