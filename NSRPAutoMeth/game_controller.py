@@ -33,6 +33,7 @@ class GameController:
         self.lock_unlock_key = parser.get('Keys', 'lock_unlock_door')
         self.open_close_glovebox = parser.get('Keys', 'inventory')
         self.open_close_inventory = parser.get('Keys', 'glovebox')
+        self.inventory_quick_move = parser.get('Keys', 'inventory_quick_move')
 
     def __pressKey(self, key: str):
         """ Presses key. """
@@ -64,6 +65,20 @@ class GameController:
     def moveBackToFront(self):
         """ Moves back to front of vehicle. """
         self.enterExitVehicle()
+        self.lockUnlockVehicle()
         time.sleep(1)
         self.enterExitVehicle()
         time.sleep(1)
+        self.lockUnlockVehicle()
+
+    def holdInventoryQuickMove(self):
+        """ Holds inventory quick move key. """
+        pydirectinput.keyDown(self.inventory_quick_move)
+
+    def releaseInventoryQuickMove(self):
+        """ Releases inventory quick move key. """
+        pydirectinput.keyUp(self.inventory_quick_move)
+
+    def click(self, x, y):
+        """ Clicks at given coordinates. """
+        pydirectinput.click(x, y)

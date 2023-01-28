@@ -28,3 +28,5 @@ CHEMICAL_KIT = 10
 
 # images for image matching
 LITHIUM_IMG = cv2.imread('images/data/lithium.jpg', cv2.IMREAD_UNCHANGED)
+ACETONE_IMG = cv2.imread('images/data/lithium.jpg', cv2.IMREAD_UNCHANGED)
+METH_IMG = cv2.imread('images/data/lithium.jpg', cv2.IMREAD_UNCHANGED)

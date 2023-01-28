@@ -10,8 +10,9 @@ import logging
 from pyautogui import getAllTitles
 from os.path import exists
 from warnings import filterwarnings
+import cv2
 if __name__ != "__main__":
-    from NSRPAutoMeth.constants import QUESTION_ANSWERS, LITHIUM_IMG
+    from NSRPAutoMeth.constants import QUESTION_ANSWERS, LITHIUM_IMG, METH_IMG, ACETONE_IMG
     from NSRPAutoMeth.game_controller import GameController
     from NSRPAutoMeth.inventory_controller import find_matches, draw_rectangles
     
@@ -39,6 +40,9 @@ class NSRPAutoMeth:
     __consecutiveFailedTicks = 0
     __cooking = False
 
+    def __imageToText(self, imgPath: str) -> str:
+        return " ".join(re.findall(r"'(.*?)'", str(self.__ocr.ocr(imgPath, cls=True))))
+
     def __getText(self) -> str:
         
         """Finds text within left half of screen
@@ -60,7 +64,7 @@ class NSRPAutoMeth:
             img = ImageGrab.grab(bbox=(0, self.resolution_y/5, self.resolution_x / 3, self.resolution_y))
         # save image
         img.save(imgPath)
-        return " ".join(re.findall(r"'(.*?)'", str(self.__ocr.ocr(imgPath, cls=True))))
+        return self.__imageToText(imgPath)
 
     def __getProductionPercent(self, text: str) -> str:
         """Returns production time of found in given text 
@@ -118,15 +122,69 @@ class NSRPAutoMeth:
         press(number)*3
         logging.info(f'Answered Question: "{question}"')
 
+    def __count_items(self, imgPath: str, template):
+        """Counts the number of items a given template has in image"""
+        lithium_rectangles = find_matches(imgPath, template)
+        tempImgPath = "last-temp.jpg"
+        count = 0
+        img = cv2.imread(imgPath)
+        for (x, y, w, h) in lithium_rectangles:
+            tempRectImg = img[y:y+h, x:x+w]
+            # make white color more visible
+            tempRectImg = cv2.cvtColor(tempRectImg, cv2.COLOR_BGR2GRAY)
+            tempRectImg = cv2.cvtColor(tempRectImg, cv2.COLOR_GRAY2BGR)
+            tempRectImg = cv2.resize(tempRectImg, (tempRectImg.shape[1] * 2, tempRectImg.shape[0] * 2), interpolation=cv2.INTER_CUBIC)
+            cv2.imwrite(tempImgPath, tempRectImg)
+            tempText = self.__imageToText(tempImgPath)
+            # get number after g and before x
+            tempText = re.search(r"(?<=g)\d+(?=x)", tempText)
+            if tempText is None:
+                logging.warning("Failed to find count")
+                continue
+            count += int(tempText.group(0))
+        return count
+
     def __check_supplies(self) -> None:
         """Checks for low supplies and refills if necessary. 
         This includes food, water, lithium, acetone, and meth"""
         logging.info("Checking supplies")
-        img = ImageGrab.grab()
         imgPath = "last-inventory-ss.jpg"
+        leftImgPath = "left-half.jpg"
+        img = ImageGrab.grab()
         img.save(imgPath)
-        rectangles = find_matches(imgPath, LITHIUM_IMG)
-        draw_rectangles(imgPath, rectangles)
+        # leftImg = img.crop((img.width / 2, 0, img.width, img.height)) # right side for debug
+        leftImg = img.crop((0, 0, img.width / 2, img.height)) # left side
+        leftImg.save(leftImgPath)
+
+        # move meth in player inventory to glove box
+        meth_rectangles = find_matches(leftImgPath, METH_IMG)
+        self.game_controller.holdInventoryQuickMove()
+        sleep(0.1)
+        if len(meth_rectangles) == 0:
+            logging.info("No meth found in inventory")
+        if len(meth_rectangles) > 0:
+            logging.info(f"Moved x{len(meth_rectangles)} meth to glove box")
+            for rectangle in meth_rectangles:
+                self.game_controller.click(rectangle[0], rectangle[1])
+                sleep(0.1)
+        self.game_controller.releaseInventoryQuickMove()
+
+        # count all lithium and acetone in inventory
+        lithium_count = self.__count_items(leftImgPath, LITHIUM_IMG)
+        acetone_count = self.__count_items(leftImgPath, ACETONE_IMG)
+        logging.debug(f"Lithium Count: {lithium_count}")
+        logging.debug(f"Acetone Count: {acetone_count}")
+
+        # check if supplies are low
+        if lithium_count < 2:
+            logging.info("Lithium low, refilling")
+        if acetone_count < 5:
+            logging.info("Acetone low, refilling")
+
+        # draw rectangles
+        lithium_rectangles = find_matches(imgPath, LITHIUM_IMG)
+        draw_rectangles(imgPath, lithium_rectangles, "Lithium")
+            
 
 
     def __check_for_information(self, text) -> bool:
@@ -207,7 +265,6 @@ class NSRPAutoMeth:
         """ 
             Starts the bot 
         """
-        print("Setting up...")
         self.__ocr = PaddleOCR(use_angle_cls=True, lang='en', show_log=False)
         self.__setup()
         # check if game window is open
