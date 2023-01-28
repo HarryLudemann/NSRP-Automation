@@ -1,3 +1,5 @@
+import cv2
+
 # key is a sentence or word that is within the question, 
 # value is a word or sentence within the answer
 QUESTION_ANSWERS = {
@@ -23,3 +25,6 @@ PLAYER_CAPACITY = 30
 LITHIUM = 0.75
 ACETONE = 0.75
 CHEMICAL_KIT = 10
+
+# images for image matching
+LITHIUM_IMG = cv2.imread('images/data/lithium.jpg', cv2.IMREAD_UNCHANGED)

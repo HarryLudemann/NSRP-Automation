@@ -11,8 +11,9 @@ from pyautogui import getAllTitles
 from os.path import exists
 from warnings import filterwarnings
 if __name__ != "__main__":
-    from NSRPAutoMeth.constants import QUESTION_ANSWERS
+    from NSRPAutoMeth.constants import QUESTION_ANSWERS, LITHIUM_IMG
     from NSRPAutoMeth.game_controller import GameController
+    from NSRPAutoMeth.inventory_controller import find_matches, draw_rectangles
     
 
 
@@ -47,6 +48,7 @@ class NSRPAutoMeth:
         str
             The text found within left half of window
         """
+        imgPath = "last-ss.jpg"
         if self.use_game_window[0] == "t": # if using game window to take screenshot
             # get window size
             window_handle = FindWindow(None, self.window_name)
@@ -57,8 +59,8 @@ class NSRPAutoMeth:
         else: # screenshot and crop to left half
             img = ImageGrab.grab(bbox=(0, self.resolution_y/5, self.resolution_x / 3, self.resolution_y))
         # save image
-        img.save("last-screenshot.png")
-        return " ".join(re.findall(r"'(.*?)'", str(self.__ocr.ocr('last-screenshot.png', cls=True))))
+        img.save(imgPath)
+        return " ".join(re.findall(r"'(.*?)'", str(self.__ocr.ocr(imgPath, cls=True))))
 
     def __getProductionPercent(self, text: str) -> str:
         """Returns production time of found in given text 
@@ -116,6 +118,17 @@ class NSRPAutoMeth:
         press(number)*3
         logging.info(f'Answered Question: "{question}"')
 
+    def __check_supplies(self) -> None:
+        """Checks for low supplies and refills if necessary. 
+        This includes food, water, lithium, acetone, and meth"""
+        logging.info("Checking supplies")
+        img = ImageGrab.grab()
+        imgPath = "last-inventory-ss.jpg"
+        img.save(imgPath)
+        rectangles = find_matches(imgPath, LITHIUM_IMG)
+        draw_rectangles(imgPath, rectangles)
+
+
     def __check_for_information(self, text) -> bool:
         """Checks for question or production percentage within left half of screen"""
         flag = False
@@ -135,6 +148,7 @@ class NSRPAutoMeth:
     def __tick(self) -> None:
         """ Runs every tick managing the bots state"""
         if not self.__cooking:
+            self.__check_supplies()
             self.game_controller.startCook()
             self.__cooking = True
             logging.info("Started cook")

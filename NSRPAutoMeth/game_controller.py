@@ -31,6 +31,8 @@ class GameController:
         self.cook_key = parser.get('Keys', 'cook')
         self.enter_exit_key = parser.get('Keys', 'enter_exit')
         self.lock_unlock_key = parser.get('Keys', 'lock_unlock_door')
+        self.open_close_glovebox = parser.get('Keys', 'inventory')
+        self.open_close_inventory = parser.get('Keys', 'glovebox')
 
     def __pressKey(self, key: str):
         """ Presses key. """
@@ -50,6 +52,14 @@ class GameController:
     def lockUnlockVehicle(self):
         """ Locks or unlocks vehicle. """
         self.__pressKey(self.lock_unlock_key)
+
+    def openCloseInventory(self):
+        """ Opens or closes inventory. """
+        self.__pressKey(self.open_close_inventory)
+
+    def openCloseGloveBox(self):
+        """ Opens or closes inventory. """
+        self.__pressKey(self.open_close_glovebox)
 
     def moveBackToFront(self):
         """ Moves back to front of vehicle. """
