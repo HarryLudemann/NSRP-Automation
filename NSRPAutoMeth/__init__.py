@@ -1,7 +1,7 @@
 from NSRPAutoMeth.main import NSRPAutoMeth
-from NSRPAutoMeth.constants import QUESTION_ANSWERS, LITHIUM_IMG, ACETONE_IMG, METH_IMG
+from NSRPAutoMeth.constants import QUESTION_ANSWERS, LITHIUM_IMG, ACETONE_IMG, METH_IMG, CENTER_INVENTORY_IMG
 from NSRPAutoMeth.game_controller import GameController
-from NSRPAutoMeth.inventory_controller import find_matches, draw_rectangles
+from NSRPAutoMeth.inventory_controller import find_matches, draw_rectangles, draw_point
 
 
 __all__ = [
@@ -10,7 +10,9 @@ __all__ = [
     "QUESTION_ANSWERS"
     "find_matches",
     "draw_rectangles",
-    "LITHIUM_IMG"
-    "ACETONE_IMG"
-    "METH_IMG"
+    "draw_point",
+    "LITHIUM_IMG",
+    "ACETONE_IMG",
+    "METH_IMG",
+    "CENTER_INVENTORY_IMG"
     ]

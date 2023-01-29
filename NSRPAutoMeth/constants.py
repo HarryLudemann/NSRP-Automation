@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 # key is a sentence or word that is within the question, 
 # value is a word or sentence within the answer
@@ -28,5 +29,8 @@ CHEMICAL_KIT = 10
 
 # images for image matching
 LITHIUM_IMG = cv2.imread('images/data/lithium.jpg', cv2.IMREAD_UNCHANGED)
-ACETONE_IMG = cv2.imread('images/data/lithium.jpg', cv2.IMREAD_UNCHANGED)
+ACETONE_IMG = cv2.imread('images/data/acetone.jpg', cv2.IMREAD_UNCHANGED)
 METH_IMG = cv2.imread('images/data/lithium.jpg', cv2.IMREAD_UNCHANGED)
+CENTER_INVENTORY_IMG = cv2.imread('images/data/center_inventory.jpg', cv2.IMREAD_UNCHANGED)
+CENTER_INVENTORY_IMG = cv2.cvtColor(np.array(CENTER_INVENTORY_IMG), cv2.COLOR_BGR2GRAY)
+CENTER_INVENTORY_IMG = cv2.cvtColor(CENTER_INVENTORY_IMG, cv2.COLOR_GRAY2BGR)
