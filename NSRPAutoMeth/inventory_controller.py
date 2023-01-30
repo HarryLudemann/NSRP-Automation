@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import logging
+import re
 if __name__ != "__main__":
     from NSRPAutoMeth.constants import LITHIUM_IMG, ACETONE_IMG, CENTER_INVENTORY_IMG
 

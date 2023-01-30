@@ -34,3 +34,9 @@ METH_IMG = cv2.imread('images/data/lithium.jpg', cv2.IMREAD_UNCHANGED)
 CENTER_INVENTORY_IMG = cv2.imread('images/data/center_inventory.jpg', cv2.IMREAD_UNCHANGED)
 CENTER_INVENTORY_IMG = cv2.cvtColor(np.array(CENTER_INVENTORY_IMG), cv2.COLOR_BGR2GRAY)
 CENTER_INVENTORY_IMG = cv2.cvtColor(CENTER_INVENTORY_IMG, cv2.COLOR_GRAY2BGR)
+
+# log images
+IMAGE_PATH = "images/log/last-inventory-ss.jpg"
+LEFT_IMAGE_PATH = "images/log/left-half.jpg"
+RIGHT_IMAGE_PATH = "images/log/right-half.jpg"
+CENTER_IMAGE_PATH = "images/log/center-half.jpg"

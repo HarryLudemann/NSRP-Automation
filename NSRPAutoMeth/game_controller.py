@@ -82,3 +82,14 @@ class GameController:
     def click(self, x, y):
         """ Clicks at given coordinates. """
         pydirectinput.click(x, y)
+
+    def set_move_count(self, number: int, center: tuple):
+        """Sets the inventory move count to a given number"""
+        # click the point
+        self.click(center[0], center[1])
+        # press right arrow twice
+        self.press("right")*2
+        # press backspace twice
+        self.press("backspace")*2
+        # press number
+        self.press(str(number))

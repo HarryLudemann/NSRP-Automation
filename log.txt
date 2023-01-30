@@ -1,8 +1,5 @@
-2023-01-29 22:36:32,459:INFO:Starting in: 2
-2023-01-29 22:36:33,469:INFO:Starting in: 1
-2023-01-29 22:36:34,471:INFO:Checking supplies
-2023-01-29 22:36:34,818:INFO:No meth found in inventory
-2023-01-29 22:36:34,999:INFO:Lithium low, refilling
-2023-01-29 22:36:35,158:INFO:Acetone low, refilling
-2023-01-29 22:36:37,111:INFO:Started cook
-2023-01-29 22:36:43,439:WARNING:No question or production percent detected
+2023-01-31 11:12:54,542:INFO:Starting in: 2
+2023-01-31 11:12:55,550:INFO:Starting in: 1
+2023-01-31 11:12:56,551:INFO:Checking supplies
+2023-01-31 11:12:58,991:INFO:No meth found in inventory
+2023-01-31 11:13:02,648:INFO:Started cook

@@ -14,7 +14,7 @@ import cv2
 import numpy as np
 from PIL import Image
 if __name__ != "__main__":
-    from NSRPAutoMeth.constants import QUESTION_ANSWERS, LITHIUM_IMG, METH_IMG, ACETONE_IMG, CENTER_INVENTORY_IMG
+    from NSRPAutoMeth.constants import QUESTION_ANSWERS, LITHIUM_IMG, METH_IMG, ACETONE_IMG, CENTER_INVENTORY_IMG, IMAGE_PATH, LEFT_IMAGE_PATH, RIGHT_IMAGE_PATH, CENTER_IMAGE_PATH
     from NSRPAutoMeth.game_controller import GameController
     from NSRPAutoMeth.inventory_controller import find_matches, draw_rectangles, draw_point
     
@@ -100,7 +100,7 @@ class NSRPAutoMeth:
             The key to  a question found within text, if one is found
         """
         for question in QUESTION_ANSWERS:
-            if question in text:
+            if re.search(question, text, re.IGNORECASE) is not None:
                 return question
 
     def __answerQuestion(self, question: str, text: str) -> None:
@@ -124,9 +124,43 @@ class NSRPAutoMeth:
         press(number)*3
         logging.info(f'Answered Question: "{question}"')
 
-    def __count_items(self, imgPath: str, template):
+    def __move_meth(self, leftImgPath: str):
+        """Move meth from inventory to glove box"""
+        meth_rectangles = find_matches(leftImgPath, METH_IMG)
+        self.game_controller.holdInventoryQuickMove()
+        sleep(0.1)
+        if len(meth_rectangles) == 0:
+            logging.info("No meth found in inventory")
+        if len(meth_rectangles) > 0:
+            logging.info(f"Moved x{len(meth_rectangles)} meth to glove box")
+            for rectangle in meth_rectangles:
+                # click center of rectangle
+                self.game_controller.click(rectangle[0] + rectangle[2] / 2, rectangle[1] + rectangle[3] / 2)
+                sleep(0.1)
+        self.game_controller.releaseInventoryQuickMove()
+
+    def __get_center(self, img):
+        """Gets the center point where to set inventory move count"""
+        CENTER_RATIO = 50
+        centerImg = img.crop((img.width / 2 - img.width / CENTER_RATIO, 0, img.width / 2 + img.width / CENTER_RATIO, img.height))
+        # make white text easier to read
+        centerImg = cv2.cvtColor(np.array(centerImg), cv2.COLOR_BGR2GRAY)
+        centerImg = cv2.cvtColor(centerImg, cv2.COLOR_GRAY2BGR)
+        # save image
+        centerImg = Image.fromarray(centerImg)
+        centerImg.save(CENTER_IMAGE_PATH)
+        center_rectangles = find_matches(CENTER_IMAGE_PATH, CENTER_INVENTORY_IMG, 0.4, 1)
+        draw_rectangles(CENTER_IMAGE_PATH, center_rectangles, "Center")
+        # draw circle, add orignal pixels to get accurate center in full image
+        if len(center_rectangles) > 0:
+            center_rectangle = center_rectangles[0]
+            center_x = (center_rectangle[0] + center_rectangle[2] / 2) + img.width / 2 - img.width / CENTER_RATIO
+            center_y = center_rectangle[1] + center_rectangle[3] / 2
+            return (int(center_x), int(center_y))
+
+    
+    def count_items(self, imgPath: str, rectangles: list) -> int:
         """Counts the number of items a given template has in image"""
-        rectangles = find_matches(imgPath, template)
         tempImgPath = "images/log/last-temp.jpg"
         count = 0
         img = cv2.imread(imgPath)
@@ -146,83 +180,67 @@ class NSRPAutoMeth:
             count += int(tempText.group(0))
         return count
 
-    def __move_meth(self, leftImgPath: str):
-        """Move meth from inventory to glove box"""
-        meth_rectangles = find_matches(leftImgPath, METH_IMG)
-        self.game_controller.holdInventoryQuickMove()
-        sleep(0.1)
-        if len(meth_rectangles) == 0:
-            logging.info("No meth found in inventory")
-        if len(meth_rectangles) > 0:
-            logging.info(f"Moved x{len(meth_rectangles)} meth to glove box")
-            for rectangle in meth_rectangles:
-                # click center of rectangle
-                self.game_controller.click(rectangle[0] + rectangle[2] / 2, rectangle[1] + rectangle[3] / 2)
-                sleep(0.1)
-        self.game_controller.releaseInventoryQuickMove()
+    def __check_supply(self, required_amount: int, center:tuple, template, rectangles):
+        if required_amount > 0:
+            if self.count_items(RIGHT_IMAGE_PATH, rectangles) >= required_amount:
+                self.game_controller.set_move_count(required_amount, center)
+                rectangles = find_matches(RIGHT_IMAGE_PATH, template)
+                iterator = 0
+                while required_amount > 0:
+                    self.game_controller.click(rectangles[0][0] + rectangles[0][2] / 2, rectangles[0][1] + rectangles[0][3] / 2)
+                    iterator+=1
+                    required_amount = 5 - self.count_items(LEFT_IMAGE_PATH, rectangles)
+                self.game_controller.set_move_count("0", center)
 
     def __check_supplies(self) -> None:
         """Checks for low supplies and refills if necessary. 
-        This includes food, water, lithium, acetone, and meth"""
+        Lithium, Acetone, and Meth"""
         logging.info("Checking supplies")
-        imgPath = "images/log/last-inventory-ss.jpg"
-        leftImgPath = "images/log/left-half.jpg"
-        rightImgPath = "images/log/right-half.jpg"
-        centerImgPath = "images/log/center-half.jpg"
+        # unlock vehicle and open inventory
+        self.game_controller.lockUnlockVehicle()
+        sleep(0.5)
+        self.game_controller.openCloseInventory()
+
+        # save and crop screenshot in different sizes
         img = ImageGrab.grab()
-        img.save(imgPath)
-        # leftImg = img.crop((img.width / 2, 0, img.width, img.height)) # right side for debug
-        leftImg = img.crop((0, 0, img.width / 2, img.height)) # left side
-        leftImg.save(leftImgPath)
         rightImg = img.crop((img.width / 2, 0, img.width, img.height)) # right side
-        rightImg.save(rightImgPath)
+        leftImg = img.crop((0, 0, img.width / 2, img.height)) # left side
+        leftImg.save(LEFT_IMAGE_PATH)
+        rightImg.save(RIGHT_IMAGE_PATH)
+        img.save(IMAGE_PATH)
 
         # move meth in player inventory to glove box
-        self.__move_meth(leftImgPath)
+        self.__move_meth(LEFT_IMAGE_PATH)
 
-        ACETONE_PER_COOK = 5
-        LITHIUM_PER_COOK = 2
-        required_lithium, required_acetone = 0, 0
-        # check if supplies are low
-        if (required_lithium := LITHIUM_PER_COOK - self.__count_items(leftImgPath, LITHIUM_IMG)) > 0:
-            logging.info("Lithium low, refilling")
-            if self.__count_items(rightImgPath, LITHIUM_IMG) >= required_lithium:
-                logging.info("Found enough lithium in right half of screen")
-        if (required_acetone := ACETONE_PER_COOK - self.__count_items( leftImgPath, ACETONE_IMG)) > 0:
-            logging.info("Acetone low, refilling")
-            if self.__count_items(rightImgPath, ACETONE_IMG) >= required_acetone:
-                logging.info("Found enough acetone in right half of screen")
-        # check if food and water are low
+        # find acetone and lithium in inventory
+        lithium_rectangles = find_matches(LEFT_IMAGE_PATH, LITHIUM_IMG)
+        acetone_rectangles = find_matches(LEFT_IMAGE_PATH, ACETONE_IMG, 0.6)
+
+        # check supplies
+        required_lithium = 5 - self.count_items(imgPath=LEFT_IMAGE_PATH, rectangles=lithium_rectangles)
+        required_acetone = 2 - self.count_items(imgPath=LEFT_IMAGE_PATH, rectangles=acetone_rectangles)
+
+        if required_lithium <= 0 or required_acetone <= 0:
+            logging.info("Supplies are sufficient")
+            return
 
         # refill supplies
-        # find acetone and lithium in inventory
+        point_x, point_y = self.__get_center(img) 
+        self.__check_supply(required_lithium, (point_x, point_y), LITHIUM_IMG, lithium_rectangles)
+        self.__check_supply(required_acetone, (point_x, point_y), ACETONE_IMG, acetone_rectangles)
 
-        # draw rectangles
-        lithium_rectangles = find_matches(imgPath, LITHIUM_IMG)
-        draw_rectangles(imgPath, lithium_rectangles, "Lithium")
+        # draw found points
+        if point_x is not None and point_y is not None:
+            draw_point(IMAGE_PATH, (point_x, point_y), "Center")
+        if lithium_rectangles is not None and len(lithium_rectangles) > 0:
+            draw_rectangles(IMAGE_PATH, lithium_rectangles, "Lithium")
+        if acetone_rectangles is not None and len(acetone_rectangles) > 0:
+            draw_rectangles(IMAGE_PATH, acetone_rectangles, "Acetone")
 
-        acetone_rectangles = find_matches(imgPath, ACETONE_IMG, 0.6)
-        draw_rectangles(imgPath, acetone_rectangles, "ACETONE")
+        # close inventory and lock vehicle
+        self.game_controller.openCloseInventory()
+        self.game_controller.lockUnlockVehicle()
 
-        # get center 22th of screenCENTER_INVENTORY
-        CENTER_RATIO = 50
-        centerImg = img.crop((img.width / 2 - img.width / CENTER_RATIO, 0, img.width / 2 + img.width / CENTER_RATIO, img.height))
-        # make white text easier to read
-        centerImg = cv2.cvtColor(np.array(centerImg), cv2.COLOR_BGR2GRAY)
-        centerImg = cv2.cvtColor(centerImg, cv2.COLOR_GRAY2BGR)
-        # save image
-        centerImg = Image.fromarray(centerImg)
-        centerImg.save(centerImgPath)
-        center_rectangles = find_matches(centerImgPath, CENTER_INVENTORY_IMG, 0.4, 1)
-        draw_rectangles(centerImgPath, center_rectangles, "Center")
-        # draw circle on imgPath with center of center rectangle, add orignal pixels to get accurate center
-        if len(center_rectangles) > 0:
-            center_rectangle = center_rectangles[0]
-            center_x = (center_rectangle[0] + center_rectangle[2] / 2) + img.width / 2 - img.width / CENTER_RATIO
-            center_y = center_rectangle[1] + center_rectangle[3] / 2
-            draw_point(imgPath, (int(center_x), int(center_y)), "Center")
-        
-    
 
     def __check_for_information(self, text) -> bool:
         """Checks for question or production percentage within left half of screen"""
