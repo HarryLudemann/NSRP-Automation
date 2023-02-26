@@ -1,4 +1,4 @@
-# NSRP Auto Meth
+# NSRP Automation
 Automate the production of meth in GTA NSRP.
 
 ### Features:
